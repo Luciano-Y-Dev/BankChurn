@@ -6,6 +6,12 @@ import matplotlib.pyplot as pt
 import seaborn as sb
 from matplotlib.colors import LinearSegmentedColormap
 
+st.set_page_config(
+    page_title= 'Bank Churn Model',
+    layout="wide"  
+)
+
+
 
 @st.cache_data
 def cargar_datos():
@@ -29,16 +35,12 @@ nombresEs = {
     'limite_credito': 'Limite de Credito'
 }
 
+@st.cache_resource
 def cargarModelo():
     data = jl.load('Modelo/modelo_banco_final.pkl')
     return data['modelo'], data['columnas'], data['umbral']
 
 modelo, columnas, umbral = cargarModelo()
-
-st.set_page_config(
-    page_title= 'Bank Churn Model',
-    layout="wide"  
-)
 
 pt.style.use('dark_background')
 colorInicio = "#83648ADE"
@@ -221,11 +223,12 @@ with st.container():
         colores = {0: "#8E07A9", 1: "#0d958e"}
         st.subheader("Grafico: Correlacion de variables")
         columnasInteres = ['age', 'credit_score', 'NewBalance', 'estimated_salary', 'products_number','tenure', 'churn']
-        dataMuestra = data.sample(n=min(600, len(data)))
+        dataMuestra = data.sample(n=min(200, len(data)), random_state=42)
         dataGrafico = dataMuestra[columnasInteres].rename(columns=nombresEs)
         
         pairplot = sb.pairplot(dataGrafico, hue='churn', palette=colores, diag_kind='kde', plot_kws={'alpha': 0.4}, height=2, aspect=1.198)
-        st.pyplot(pairplot)
+        st.pyplot(pairplot.figure)
+        pt.close(pairplot.figure)
         st.caption("**Insight:** Se nota que la relacion entre la edad y las otras variables sigue un patron claro de color 'Churn' en el rango de 50-70 años")
         st.caption("Mismo patron en el numero de productos")
         
@@ -239,6 +242,7 @@ with st.container():
         coloresImportancia = [degradado(i) for i in np.linspace(1, 0, len(importanciasSerie))]
         sb.barplot(x=importanciasSerie.values, y=importanciasSerie.index, ax=ax, hue=importanciasSerie.index, palette=coloresImportancia, legend=False)
         st.pyplot(fig)
+        pt.close(fig)
         st.caption("**Insight:** Las variables con más peso para el modelo predictivo son 'Edad', 'Numero de productos contratados' y 'El salario estimado'")
         
     with columna3:   
@@ -262,6 +266,7 @@ with st.container():
         
         sb.barplot(data=dataPais, x='country', y='churn', hue='country', palette=coloresPaises, ax=ax)
         st.pyplot(fig)
+        pt.close(fig)
         st.caption("**Insight:** Alemania es el pais con una tasa de ida 'Churn' más alta")
         
         
