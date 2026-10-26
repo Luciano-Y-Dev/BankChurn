@@ -187,7 +187,7 @@ if submit_button:
 
     input_data = {
         'age': edad,
-        'NewBalance': balance,
+        'NewBalance': np.arcsinh(balance),
         'credit_score': score,
         'products_number': productos,
         'active_member': miembro,
