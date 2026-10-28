@@ -242,8 +242,8 @@ renderizar_html(
         --muted: #9b9c9e;
         --accent: #f3eb73;
         --paper: #e6e5df;
-        --row-top: calc((100dvh - 190px) * .47);
-        --row-bottom: calc((100dvh - 190px) * .53);
+        --row-top: calc((100dvh - 148px) * .47);
+        --row-bottom: calc((100dvh - 148px) * .53);
     }}
     * {{ box-sizing: border-box; }}
     html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"] {{
@@ -253,23 +253,27 @@ renderizar_html(
     }}
     [data-testid="stHeader"] {{ display: block; height: 0; background: transparent; }}
     [data-testid="stDecoration"], [data-testid="stToolbarActions"], [data-testid="stHeaderActionElements"], [data-testid="stAppDeployButton"], [data-testid="stMainMenu"], footer {{ display: none; }}
-    [data-testid="collapsedControl"] {{ display: block; position: fixed; top: 12px; left: 12px; z-index: 1000000; }}
-    [data-testid="collapsedControl"] button {{ color: #b9bab9; background: #1c1d1e; border-radius: 8px; }}
-    [data-testid="stAppViewContainer"] > .main .block-container {{
-        max-width: none; height: 100dvh; padding: 20px 24px 18px; overflow: hidden;
+    button[data-testid="stExpandSidebarButton"] {{
+        position: fixed; top: 12px; left: 12px; z-index: 1000000;
+        color: #b9bab9; background: #1c1d1e; border-radius: 8px; padding: 6px;
     }}
-    .main [data-testid="stVerticalBlock"] {{ gap: 0; }}
-    .main [data-testid="stHorizontalBlock"] {{ gap: 14px; margin: 0; }}
-    .main [data-testid="stHorizontalBlock"] + div {{ margin-top: 14px; }}
-    .main [data-testid="stColumn"] > div {{ height: 100%; }}
-    .main [data-testid="stMarkdownContainer"] {{ height: 100%; }}
-    .main [data-testid="stMarkdownContainer"]:has(style) {{ display: none; }}
+    body:has(section[data-testid="stSidebar"][aria-expanded="false"]) [data-testid="stMainBlockContainer"] {{ padding-left: 64px; }}
+    [data-testid="stMainBlockContainer"] {{
+        max-width: none; height: 100dvh; padding: 14px 24px 24px; overflow: hidden;
+    }}
+    [data-testid="stMain"] [data-testid="stVerticalBlock"] {{ gap: 0; }}
+    [data-testid="stMain"] [data-testid="stHorizontalBlock"] {{ gap: 14px; margin: 0; }}
+    [data-testid="stMain"] [data-testid="stVerticalBlock"] > div:has(.dashboard-header) {{ padding-bottom: 6px; }}
+    [data-testid="stMain"] [data-testid="stVerticalBlock"] > div:has([data-testid="stHorizontalBlock"]) {{ padding-top: 30px; }}
+    [data-testid="stMain"] [data-testid="stColumn"] > div {{ height: 100%; }}
+    [data-testid="stMain"] [data-testid="stColumn"] [data-testid="stMarkdownContainer"] {{ height: 100%; }}
+    [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.dashboard-header) {{ height: auto; }}
+    [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(style) {{ display: none; }}
     .dashboard-header {{
-        height: 52px; margin-bottom: 16px; display: flex; align-items: center;
+        height: 52px; margin-bottom: 0; display: flex; align-items: center;
         justify-content: space-between;
     }}
-    .dashboard-title {{ margin: 0; font-size: clamp(20px, 2vw, 29px); line-height: 1; letter-spacing: -.035em; font-weight: 650; }}
-    .dashboard-title span {{ color: #77797c; font-weight: 400; }}
+    .dashboard-title {{ margin: 0; font-size: clamp(22px, 2.2vw, 32px); line-height: 1; letter-spacing: -.02em; font-weight: 800; color: #fff; }}
     .header-meta {{ display: flex; align-items: center; gap: 9px; font-size: 11px; color: #b9bab9; }}
     .live-dot {{ width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display: inline-block; flex: none; }}
     .bento-card {{
@@ -339,9 +343,12 @@ renderizar_html(
     @keyframes rise {{ from {{ transform: translateY(8px); filter: blur(3px); }} to {{ transform: translateY(0); filter: blur(0); }} }}
     .risk-value {{ animation: rise .55s cubic-bezier(.16,1,.3,1); }}
     section[data-testid="stSidebar"] {{
-        width: 310px; min-width: 310px; background: #171819; border-right: 1px solid #292a2c;
+        background: #171819; border-right: 1px solid #292a2c;
     }}
-    section[data-testid="stSidebar"] > div {{ width: 310px; }}
+    section[data-testid="stSidebar"][aria-expanded="true"] {{
+        width: 310px; min-width: 310px;
+    }}
+    section[data-testid="stSidebar"][aria-expanded="true"] > div {{ width: 310px; }}
     [data-testid="stSidebarContent"] {{ overflow: hidden; }}
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {{ gap: 7px; }}
     [data-testid="stSidebar"] .block-container {{ padding: 22px 20px 14px; }}
@@ -354,8 +361,8 @@ renderizar_html(
     [data-testid="stSidebar"] [data-testid="stWidgetLabel"] {{ margin-bottom: 3px; }}
     [data-testid="stSidebar"] [data-baseweb="slider"] > div > div {{ background: var(--accent) !important; }}
     [data-testid="stSidebar"] [role="slider"] {{ background: var(--accent) !important; border: 3px solid #171819 !important; box-shadow: 0 0 0 1px var(--accent) !important; width: 15px !important; height: 15px !important; }}
-    [data-testid="stSidebar"] [data-testid="stThumbValue"] {{ color: #e7e6e0 !important; background: #2a2b2c !important; font-size: 10px !important; }}
-    [data-testid="stSidebar"] [data-testid="stTickBarMin"], [data-testid="stSidebar"] [data-testid="stTickBarMax"] {{ display: none; }}
+    [data-testid="stSidebar"] [data-baseweb="slider"] [role="slider"] > div {{ background: #2a2b2c !important; color: #e7e6e0 !important; }}
+    [data-testid="stSidebar"] [data-testid="stSliderTickBar"] {{ display: none !important; }}
     [data-testid="stSidebar"] div[data-baseweb="select"] > div, [data-testid="stSidebar"] [data-baseweb="input"] {{ background: #222325; border: 1px solid #303134; border-radius: 9px; min-height: 36px; }}
     [data-testid="stSidebar"] input {{ color: #ecebe6; font-size: 11px; caret-color: var(--accent); }}
     [data-testid="stSidebar"] [data-baseweb="select"] * {{ color: #ecebe6; font-size: 11px; }}
@@ -376,10 +383,10 @@ renderizar_html(
         .risk-card .card-title {{ font-size: 12px; }}
     }}
     @media (max-width: 1100px) {{
-        section[data-testid="stSidebar"] {{ width: 280px; min-width: 280px; }}
-        section[data-testid="stSidebar"] > div {{ width: 280px; }}
+        section[data-testid="stSidebar"][aria-expanded="true"] {{ width: 280px; min-width: 280px; }}
+        section[data-testid="stSidebar"][aria-expanded="true"] > div {{ width: 280px; }}
         [data-testid="stSidebar"] .block-container {{ padding-left: 15px; padding-right: 15px; }}
-        [data-testid="stAppViewContainer"] > .main .block-container {{ padding-left: 16px; padding-right: 16px; }}
+        [data-testid="stMainBlockContainer"] {{ padding-left: 16px; padding-right: 16px; }}
         .bento-card {{ padding: 17px; }}
         .importance-row {{ grid-template-columns: 90px 1fr 30px; gap: 8px; }}
     }}
@@ -391,11 +398,11 @@ renderizar_html(
     }}
     @media (max-width: 800px) {{
         section[data-testid="stSidebar"] {{ position: fixed; left: 0; top: 0; bottom: 0; z-index: 999999; }}
-        .dashboard-header, .main [data-testid="stMarkdownContainer"]:has(.dashboard-header) {{ display: none; }}
+        .dashboard-header, [data-testid="stMain"] [data-testid="stMarkdownContainer"]:has(.dashboard-header) {{ display: none; }}
         html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"] {{ height: auto; min-height: 100dvh; overflow: auto; }}
-        [data-testid="stAppViewContainer"] > .main .block-container {{ height: auto; overflow: visible; }}
-        .main [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap; }}
-        .main [data-testid="stColumn"] {{ flex: 1 1 100% !important; width: 100% !important; }}
+        [data-testid="stMainBlockContainer"] {{ height: auto; overflow: visible; }}
+        [data-testid="stMain"] [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap; }}
+        [data-testid="stMain"] [data-testid="stColumn"] {{ flex: 1 1 100% !important; width: 100% !important; }}
         .bento-card {{ height: 320px; margin-bottom: 14px; }}
         .risk-card {{ height: 300px; }}
     }}
@@ -408,7 +415,7 @@ renderizar_html(
 renderizar_html(
     f"""
     <header class="dashboard-header">
-        <h1 class="dashboard-title">Bank Churn <span>/ Risk intelligence</span></h1>
+        <h1 class="dashboard-title">Bank Churn</h1>
         <div class="header-meta" title="Clase nativa del modelo: {clase_nativa}. La decisión visual usa el umbral almacenado de {umbral:.0%}."><span class="live-dot"></span> Modelo activo · {numero(len(data))} perfiles</div>
     </header>
     """,
